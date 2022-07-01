@@ -1,6 +1,10 @@
-def main():
-    print("Hello world!")
-    return
+import torch
+import torch.nn
 
-if __name__ == "__main__":
-    main()
+class model(nn.Module):
+    def __init__(self):
+        print("init")
+        return 
+        
+    def forward(self, X):
+        return 
