@@ -1,4 +1,4 @@
-#from model import model
+from model import model
 import torch
 import torchvision
 import torchvision.transforms as transforms
@@ -13,7 +13,7 @@ def main():
     train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False)
 
-    examples = iter(train_loader)
+    examples = iter(train_dataloader)
     samples, labels = examples.next()
     print(samples.shape, labels.shape)
 
@@ -27,7 +27,7 @@ def main():
     # 2. Construct loss and optimizer (import from torch)
     learning_rate = 0.01
     criterion = torch.nn.BCELoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.SGD(network.parameters(), lr=learning_rate)
     # 3. Construct and run training loop:
     #   -> forward pass: compute prediction + loss
     #   -> backward pass: gradients
