@@ -1,9 +1,16 @@
 from model import model
 import torch
+import torchvision
+import torchvision.transforms as transforms
+import matplotlib.pyplot as plt
 
 def main():
+    # data
+    train_dataset = torch.datasets
+    test_dataset = torchvision.datasets.FashionMNIST()
+
     # 1. Design the model (look @ model.py)
-    network = model
+    network = model()
     # 2. Construct loss and optimizer (import from torch)
     learning_rate = 0.01
     criterion = torch.nn.BCELoss()

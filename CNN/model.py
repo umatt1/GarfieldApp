@@ -7,10 +7,13 @@ class model(nn.Module):
         super(model, self).__init__()
 
         # CNN stuff here
+        self.conv1 = nn.Conv2d(n_input_features, 128, (5,5), stride=1, padding='same')
         # pooling stuff here
+        self.pool = nn.MaxPool2d((2,2))
         # CNN stuff here
+        self.conv2 = nn.Conv2d()
         # pooling stuff here
-        self.linear1 = nn.Linear() # needs input size, hidden size
+        self.linear1 = nn.Linear(n_input_features, ) # needs input size, hidden size
         self.relu = nn.ReLU()
         self.linear2 = nn.Linear(,1) # needs in features
         self.sigmoid = nn.Sigmoid()
