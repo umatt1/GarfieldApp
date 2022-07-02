@@ -3,6 +3,7 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
+import pdb
 
 def main():
     batch_size=16
@@ -33,7 +34,7 @@ def main():
     #plt.show()
 
     # 1. Design the model (look @ model.py)
-    network = model((28,28))
+    network = model(samples.shape[1])
     # 2. Construct loss and optimizer (import from torch)
     learning_rate = 0.01
     criterion = torch.nn.BCELoss()
@@ -46,7 +47,7 @@ def main():
     for epoch in range(epochs):
         for i, (images, labels) in enumerate(train_dataloader):
             # forward pass, data manipulation
-            images = images.reshape(-1, (28,28))
+            #images = images.reshape(-1, 28,28)
             Y_pred = network.forward(images)
             loss = criterion(Y_pred, labels)
 

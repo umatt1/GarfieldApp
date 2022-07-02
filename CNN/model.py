@@ -11,11 +11,11 @@ class model(nn.Module):
         # pooling stuff here
         self.pool = nn.MaxPool2d((2,2))
         # CNN stuff here
-        self.conv2 = nn.Conv2d()
+        self.conv2 = nn.Conv2d(128, 128, (5,5), stride=1, padding='same')
         # pooling stuff here
-        self.linear1 = nn.Linear(n_input_features, ) # needs input size, hidden size
+        self.linear1 = nn.Linear(1,1) # needs input size, hidden size
         self.relu = nn.ReLU()
-        self.linear2 = nn.Linear(0,1) # needs in features
+        self.linear2 = nn.Linear(1,1) # needs in features
         self.sigmoid = nn.Sigmoid()
         return 
 
