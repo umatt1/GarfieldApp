@@ -1,16 +1,29 @@
-from model import model
+#from model import model
 import torch
 import torchvision
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 
 def main():
+    batch_size=16
+    epochs = 10
     # data
-    train_dataset = torch.datasets
-    test_dataset = torchvision.datasets.FashionMNIST()
+    train_dataset = torchvision.datasets.FashionMNIST(root="../../FashionMnist", train=True, download=True)
+    test_dataset = torchvision.datasets.FashionMNIST(root="../../FashionMnist", train=False)
+    train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
+    test_dataloader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False)
+
+    examples = iter(train_loader)
+    samples, labels = examples.next()
+    print(samples.shape, labels.shape)
+
+    for i in range(6):
+        plt.subplot(2,3, i+1)
+        plt.imshow(samples[i][0], cmap='gray')
+    plt.show()
 
     # 1. Design the model (look @ model.py)
-    network = model()
+    network = model((28,28))
     # 2. Construct loss and optimizer (import from torch)
     learning_rate = 0.01
     criterion = torch.nn.BCELoss()
@@ -19,16 +32,31 @@ def main():
     #   -> forward pass: compute prediction + loss
     #   -> backward pass: gradients
     #   -> update weights
-    num_epochs = 100
-    for epoch in range(num_epochs):
-        y_pred = model.forward()
-        loss = criterion()
-        loss.backward()
-        optimizer.step()
-        optimizer.zero_grad()
-        if (epoch+1) % 10 == 0:
-            print(f'epoch {epoch+1} loss {loss.item():.4f}')
-    print("Hello world!")
+    n_total_steps = len(train_dataloader)
+    for epoch in range(epochs):
+        for i, (images, labels) in enumerate(train_dataloader):
+            images = images.reshape(-1, (28,28))
+            Y_pred = model.forward(images)
+            loss = criterion(outputs, labels)
+
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            if (i+1) % 100 == 0:
+                print(f'epoch {epoch+1} / {epochs}, step {i+1}/{n_total_steps}, loss = {loss.item():.4f}')
+    
+    # test
+    with torch.no_grad():
+        n_correct = 0
+        n_samples = 0
+        for images, labels in test_dataloader:
+            images = images.reshape(-1, (28,28))
+            outputs = model(images)
+            _, predictions = torch.max(outputs, 1)
+            n_samples += shape[0]
+            n_correct += (predictions == labels).sum().item()
+        acc = 100.0 * n_correct / n_samples
     return
 
 if __name__ == "__main__":
