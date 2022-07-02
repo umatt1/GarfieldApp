@@ -8,8 +8,8 @@ def main():
     batch_size=16
     epochs = 10
     # data
-    train_dataset = torchvision.datasets.FashionMNIST(root="../../FashionMnist", train=True, download=True)
-    test_dataset = torchvision.datasets.FashionMNIST(root="../../FashionMnist", train=False)
+    train_dataset = torchvision.datasets.FashionMNIST(root="../../", train=True)
+    test_dataset = torchvision.datasets.FashionMNIST(root="../../", train=False)
     train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False)
 
@@ -36,7 +36,7 @@ def main():
     for epoch in range(epochs):
         for i, (images, labels) in enumerate(train_dataloader):
             images = images.reshape(-1, (28,28))
-            Y_pred = model.forward(images)
+            Y_pred = network.forward(images)
             loss = criterion(outputs, labels)
 
             optimizer.zero_grad()
@@ -52,7 +52,7 @@ def main():
         n_samples = 0
         for images, labels in test_dataloader:
             images = images.reshape(-1, (28,28))
-            outputs = model(images)
+            outputs = network(images)
             _, predictions = torch.max(outputs, 1)
             n_samples += shape[0]
             n_correct += (predictions == labels).sum().item()
