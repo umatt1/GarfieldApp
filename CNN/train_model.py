@@ -3,7 +3,6 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
-import pdb
 
 def main():
     batch_size=16
@@ -38,6 +37,7 @@ def main():
     # 2. Construct loss and optimizer (import from torch)
     learning_rate = 0.01
     criterion = torch.nn.BCELoss()
+    criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(network.parameters(), lr=learning_rate)
     # 3. Construct and run training loop:
     #   -> forward pass: compute prediction + loss
@@ -64,12 +64,13 @@ def main():
         n_correct = 0
         n_samples = 0
         for images, labels in test_dataloader:
-            images = images.reshape(-1, (28,28))
+            #images = images.reshape(-1, (28,28))
             outputs = network.forward(images)
             _, predictions = torch.max(outputs, 1)
             n_samples += images.shape[0]
             n_correct += (predictions == labels).sum().item()
         acc = 100.0 * n_correct / n_samples
+        print(acc)
     return
 
 if __name__ == "__main__":
