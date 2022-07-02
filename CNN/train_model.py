@@ -7,9 +7,19 @@ import matplotlib.pyplot as plt
 def main():
     batch_size=16
     epochs = 10
+
+    transform = transforms.Compose(
+        [transforms.ToTensor(), 
+        transforms.Normalize((.5, .5, .5), (.5, .5, .5))]
+    )
+    transform = transforms.Compose(
+        [transforms.ToTensor(),
+        transforms.Normalize((.5,),(.5,))]
+    )
+
     # data
-    train_dataset = torchvision.datasets.FashionMNIST(root="../../", train=True)
-    test_dataset = torchvision.datasets.FashionMNIST(root="../../", train=False)
+    train_dataset = torchvision.datasets.FashionMNIST(root="../../", train=True, transform=transform)
+    test_dataset = torchvision.datasets.FashionMNIST(root="../../", train=False, transform=transform)
     train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False)
 
@@ -17,10 +27,10 @@ def main():
     samples, labels = examples.next()
     print(samples.shape, labels.shape)
 
-    for i in range(6):
-        plt.subplot(2,3, i+1)
-        plt.imshow(samples[i][0], cmap='gray')
-    plt.show()
+    #for i in range(6):
+    #    plt.subplot(2,3, i+1)
+    #    plt.imshow(samples[i][0], cmap='gray')
+    #plt.show()
 
     # 1. Design the model (look @ model.py)
     network = model((28,28))
@@ -35,10 +45,12 @@ def main():
     n_total_steps = len(train_dataloader)
     for epoch in range(epochs):
         for i, (images, labels) in enumerate(train_dataloader):
+            # forward pass, data manipulation
             images = images.reshape(-1, (28,28))
             Y_pred = network.forward(images)
-            loss = criterion(outputs, labels)
+            loss = criterion(Y_pred, labels)
 
+            # backward and optimize
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -52,9 +64,9 @@ def main():
         n_samples = 0
         for images, labels in test_dataloader:
             images = images.reshape(-1, (28,28))
-            outputs = network(images)
+            outputs = network.forward(images)
             _, predictions = torch.max(outputs, 1)
-            n_samples += shape[0]
+            n_samples += images.shape[0]
             n_correct += (predictions == labels).sum().item()
         acc = 100.0 * n_correct / n_samples
     return
