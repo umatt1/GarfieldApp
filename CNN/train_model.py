@@ -37,7 +37,7 @@ def main():
     network = model(samples.shape[1])
     # 2. Construct loss and optimizer (import from torch)
     learning_rate = 0.01
-    criterion = torch.nn.BCELoss()
+    criterion = torch.nn.L1Loss()
     optimizer = torch.optim.SGD(network.parameters(), lr=learning_rate)
     # 3. Construct and run training loop:
     #   -> forward pass: compute prediction + loss

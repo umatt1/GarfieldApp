@@ -26,7 +26,6 @@ class model(nn.Module):
         X = self.conv2(X)
         X = self.pool(X)
         X = self.relu(X)
-        import pdb; pdb.set_trace()
         X = X.view(-1, 128*62*62)
         X = self.linear1(X)
         X = self.relu(X)
