@@ -13,7 +13,8 @@ class GarfieldDataset(Dataset):
         # dataloader has specified which split it is
         csv = os.path.join(dataset_homedir, "data.csv")
         df = pd.read_csv(csv)
-        df = df[df["split"]] == split
+        df = df[df["split"] == split]
+        df.reset_index(drop=True, inplace=True)
         self.labels = df["isgarf"]
         self.files = df["filename"]
         self.transform = transform

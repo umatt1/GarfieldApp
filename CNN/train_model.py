@@ -1,8 +1,10 @@
 from model import model
 import torch
+from dataset import GarfieldDataset
 import torchvision
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
+import os
 
 def main():
     batch_size=16
@@ -18,8 +20,8 @@ def main():
     )
 
     # data
-    train_dataset = torchvision.datasets.FashionMNIST(root="../../", train=True, transform=transform)
-    test_dataset = torchvision.datasets.FashionMNIST(root="../../", train=False, transform=transform)
+    train_dataset = GarfieldDataset(os.path.join(os.getcwd(), "dataset"), transform, split=0)
+    test_dataset = GarfieldDataset(os.path.join(os.getcwd(), "dataset"), transform, split=1)
     train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False)
 
