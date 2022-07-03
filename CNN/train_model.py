@@ -37,8 +37,8 @@ def main():
     network = model(samples.shape[1])
     # 2. Construct loss and optimizer (import from torch)
     learning_rate = 0.01
-    criterion = torch.nn.L1Loss()
-    optimizer = torch.optim.SGD(network.parameters(), lr=learning_rate)
+    criterion = torch.nn.NLLLoss(reduction='sum')
+    optimizer = torch.optim.Adam(network.parameters(), lr=learning_rate)
     # 3. Construct and run training loop:
     #   -> forward pass: compute prediction + loss
     #   -> backward pass: gradients
@@ -50,13 +50,14 @@ def main():
             #images = images.reshape(-1, 28,28)
             Y_pred = network.forward(images)
             loss = criterion(Y_pred, labels)
+            print(Y_pred, labels)
 
             # backward and optimize
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
-            if (i+1) % 100 == 0:
+            if (i+1) % 1 == 0:
                 print(f'epoch {epoch+1} / {epochs}, step {i+1}/{n_total_steps}, loss = {loss.item():.4f}')
     
     # test
