@@ -13,7 +13,7 @@ class model(nn.Module):
         # CNN stuff here
         self.conv2 = nn.Conv2d(128, 128, (5,5), stride=1, padding='same')
         # pooling stuff here
-        self.linear1 = nn.Linear(6272,640) # needs input size, hidden size
+        self.linear1 = nn.Linear(492032,640) # needs input size, hidden size
         self.relu = nn.ReLU()
         self.linear2 = nn.Linear(640,2) # needs in features
         self.sigmoid = nn.Sigmoid()
@@ -26,7 +26,8 @@ class model(nn.Module):
         X = self.conv2(X)
         X = self.pool(X)
         X = self.relu(X)
-        X = X.view(-1, 128*7*7)
+        import pdb; pdb.set_trace()
+        X = X.view(-1, 128*62*62)
         X = self.linear1(X)
         X = self.relu(X)
         X = self.linear2(X)

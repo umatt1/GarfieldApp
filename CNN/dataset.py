@@ -2,10 +2,11 @@ from torch.utils.data import Dataset, DataLoader
 import os
 import pandas as pd
 from PIL import Image
+import numpy as np
 
 class GarfieldDataset(Dataset):
 
-    def __init__(self, dataset_homedir, transform, split=0):
+    def __init__(self, dataset_homedir, transform, split=0, debug=False):
         # its easier just to write this ourselves
         # class needs:
         #       open data.csv

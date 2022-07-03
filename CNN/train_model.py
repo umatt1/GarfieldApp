@@ -11,13 +11,12 @@ def main():
     epochs = 10
 
     transform = transforms.Compose(
-        [transforms.ToTensor(), 
-        transforms.Normalize((.5, .5, .5), (.5, .5, .5))]
-    )
-    transform = transforms.Compose(
-        [transforms.ToTensor(),
-        transforms.Normalize((.5,),(.5,))]
-    )
+        [
+            transforms.ToTensor(),
+            transforms.Resize(size=(250,250)), 
+            transforms.Normalize((.5, .5, .5), (.5, .5, .5))
+            
+        ])
 
     # data
     train_dataset = GarfieldDataset(os.path.join(os.getcwd(), "dataset"), transform, split=0)
@@ -39,7 +38,6 @@ def main():
     # 2. Construct loss and optimizer (import from torch)
     learning_rate = 0.01
     criterion = torch.nn.BCELoss()
-    criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(network.parameters(), lr=learning_rate)
     # 3. Construct and run training loop:
     #   -> forward pass: compute prediction + loss
