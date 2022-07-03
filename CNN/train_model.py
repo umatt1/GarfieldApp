@@ -2,9 +2,11 @@ from model import model
 import torch
 from dataset import GarfieldDataset
 import torchvision
+from torchvision import datasets, models
 import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 import os
+import torch.nn as nn
 
 def main():
     batch_size=16
@@ -34,10 +36,15 @@ def main():
     #plt.show()
 
     # 1. Design the model (look @ model.py)
-    network = model(samples.shape[1])
+    network = models.resnet18(pretrained=True)
+    # transfer learning
+    for param in network.parameters():
+        param.requires_grad = False
+    num_ftrs = network.fc.in_features
+    network.fc = nn.Linear(num_ftrs, 2)
     # 2. Construct loss and optimizer (import from torch)
     learning_rate = 0.01
-    criterion = torch.nn.NLLLoss(reduction='sum')
+    criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(network.parameters(), lr=learning_rate)
     # 3. Construct and run training loop:
     #   -> forward pass: compute prediction + loss
@@ -50,7 +57,7 @@ def main():
             #images = images.reshape(-1, 28,28)
             Y_pred = network.forward(images)
             loss = criterion(Y_pred, labels)
-            print(Y_pred, labels)
+            #print(Y_pred, labels)
 
             # backward and optimize
             optimizer.zero_grad()
@@ -67,6 +74,8 @@ def main():
         for images, labels in test_dataloader:
             #images = images.reshape(-1, (28,28))
             outputs = network.forward(images)
+            print(outputs)
+            print(labels)
             _, predictions = torch.max(outputs, 1)
             n_samples += images.shape[0]
             n_correct += (predictions == labels).sum().item()
