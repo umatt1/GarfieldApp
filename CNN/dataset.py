@@ -5,27 +5,33 @@ from PIL import Image
 
 class GarfieldDataset(Dataset):
 
-    def __init__(self, data_dir, transform, data_type="train"):
-        # Get image file names
-        cdm_data = os.path.join(data_dir, data_type)
-        file_names = [os.listdir(cdm_data, f) for f in file_names]
-
-        # Get labels
-        labels_data = os.path.join(data_dir, "train_labels.csv")
-        labels_df = pd.read_csv(labels_data)
-        labels_df.set_index("id", inplace=True)
-        # obtained labels from df
-        self.labels = [labels_df.loc[filename[:-4]].values[0] for filename in file_names]
+    def __init__(self, dataset_homedir, transform, split=0):
+        # its easier just to write this ourselves
+        # class needs:
+        #       open data.csv
+        #       load lines (is it a garfield, img, split)
+        # dataloader has specified which split it is
+        csv = os.path.join(dataset_homedir, "data.csv")
+        df = pd.read_csv(csv)
+        df = df[df["split"]] == split
+        self.labels = df["isgarf"]
+        self.files = df["filename"]
         self.transform = transform
+        self.homedir = dataset_homedir
         return
 
     def __getitem__(self, index):
         # returns an item
-        image = Image.open(self.full_filienames[index])
+        if self.labels[index] == 1:
+            # is a garfield
+            file = os.path.join(self.homedir, "garf_pics", self.files[index])
+        else:
+            file = os.path.join(self.homedir, "non_garf_pics", self.files[index])
+        image = Image.open(file)
         image = self.transform(image)
         return image, self.labels[index]
 
     def __len__(self):
         # len dataset
-        return len(self.full_filenames)
+        return len(self.files)
 
