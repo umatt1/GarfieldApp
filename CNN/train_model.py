@@ -9,6 +9,7 @@ import os
 import torch.nn as nn
 
 def main():
+    FILE = "model.pth"
     batch_size=16
     epochs = 10
 
@@ -81,6 +82,8 @@ def main():
             n_correct += (predictions == labels).sum().item()
         acc = 100.0 * n_correct / n_samples
         print(acc)
+
+    torch.save(network.state_dict(), FILE)
     return
 
 if __name__ == "__main__":
