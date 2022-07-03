@@ -6,7 +6,7 @@ isgarf,filename,split
 1,garfieldmovie.jpg,2
 1,garfieldshow.jpg,0
 1,grumpy.jpg,1
-1,lasagna.jpg,2
+1,lasgna.jpg,2
 1,oldgarfield.jpg,0
 1,pirate.jpg,1
 1,poster.jpg,2
@@ -22,7 +22,6 @@ isgarf,filename,split
 0,idk.png,2
 0,long.jpg,0
 0,odie1.jpg,1
-0,odie2.jpg,2
 0,odie3.jpeg,0
 0,scoob1.jpg,0
 0,scoob2.jpg,1
@@ -30,3 +29,5 @@ isgarf,filename,split
 0,scoob4.jpg,0
 0,siamese.jpg,0
 0,wow.jpg,0
+1,mygarfieldshirt.jpg,2
+1,halfmygarfieldshirt.jpg,2

@@ -23,7 +23,7 @@ def main():
 
     # data
     train_dataset = GarfieldDataset(os.path.join(os.getcwd(), "dataset"), transform, split=0)
-    test_dataset = GarfieldDataset(os.path.join(os.getcwd(), "dataset"), transform, split=1)
+    test_dataset = GarfieldDataset(os.path.join(os.getcwd(), "dataset"), transform, split=2)
     train_dataloader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = torch.utils.data.DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=False)
 
