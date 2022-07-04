@@ -3,5 +3,5 @@ from django.http import HttpResponse
 
 # Create your views here.
 
-def index(response):
-    return HttpResponse("test")
+def index(response, imagelink):
+    return HttpResponse(imagelink)
