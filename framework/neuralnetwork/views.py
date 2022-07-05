@@ -11,12 +11,12 @@ import torch.nn as nn
 
 # Create your views here.
 
-def index(response, imagelink):
-    imagelink = urllib.parse.unquote(imagelink)
-    path = io.StringIO(urllib.request.urlopen(imagelink).read())
-    picture = Image.open(path)
+def index(request, imagelink):
+    query_string : str = request.META["QUERY_STRING"]
+    path : str = (request.path + "?" + query_string).replace("/image/", "")
+    urllib.request.urlretrieve(path, "image.png")
+    picture = Image.open("image.png")
 
-    # 1. Design the model
     model = models.resnet18(pretrained=False)
     num_ftrs = model.fc.in_features
     model.fc = nn.Linear(num_ftrs, 2)
