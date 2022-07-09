@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import urllib.request
 import urllib.parse
-import io
+import os
 from PIL import Image
 import torch
 from torchvision import models
@@ -22,7 +22,6 @@ transform = transforms.Compose(
 
 
 def index(request, imagelink):
-    import pdb; pdb.set_trace()
     query_string : str = request.META["QUERY_STRING"]
     path : str = (request.path + "?" + query_string).replace("/image/", "")
     if path[0] == "/":
@@ -37,5 +36,7 @@ def index(request, imagelink):
     model.fc = nn.Linear(num_ftrs, 2)
     model.load_state_dict(torch.load("../CNN/model.pth"))
     model.eval()
+
+    os.remove("image.png");
 
     return HttpResponse(model.forward(picture))
