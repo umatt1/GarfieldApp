@@ -37,6 +37,6 @@ def index(request, imagelink):
     model.load_state_dict(torch.load("../CNN/model.pth"))
     model.eval()
 
-    os.remove("image.png");
+    os.remove("image.png")
 
     return HttpResponse(model.forward(picture))
