@@ -9,7 +9,7 @@ import torchvision.transforms as transforms
 from PIL import Image
 import urllib.request
 import os
-from secrets import consumer_key, consumer_secret, access_token, access_token_secret
+from secret_keys import consumer_key, consumer_secret, access_token, access_token_secret
 
 transform = transforms.Compose(
     [
@@ -57,36 +57,39 @@ def process_tweet(api, id, model):
 
 
 def check_mentions(api, c, conn, model):
-    response = api.get_users_mentions(api.get_me()[0]['id'], user_auth=True, expansions="referenced_tweets.id")
-    for tweet in response.includes['tweets']:
-        id = tweet.id
-        # must not already be mentioned
-        c.execute('''
-        SELECT id FROM mentions WHERE id=?
-        ''', (id,))
-        exists = c.fetchall()
+    try:
+        response = api.get_users_mentions(api.get_me()[0]['id'], user_auth=True, expansions="referenced_tweets.id")
+        for tweet in response.includes['tweets']:
+            id = tweet.id
+            # must not already be mentioned
+            c.execute('''
+            SELECT id FROM mentions WHERE id=?
+            ''', (id,))
+            exists = c.fetchall()
 
-        if not exists:
-            c.execute('INSERT INTO mentions VALUES (?)', (id,))
-            conn.commit()
-            # do processing of tweet here
-            answer = process_tweet(api, id, model)
-            if not answer:
-                print('broke')
-                text = "did not work sad face :("
-            elif answer[0] < answer[1]:
-                print('found a non garfield')
-                text = f"this is NOT garfield"
-            else:
-                print('found a garfield')
-                text = "this is garfield!"
-            if answer:
-                text = text+f"\n(garfield score of {answer[0]}, non garfield score of {answer[1]})"
-            api.create_tweet(
-                text=text,
-                user_auth=True,
-                in_reply_to_tweet_id=tweet.id,
-            )
+            if not exists:
+                c.execute('INSERT INTO mentions VALUES (?)', (id,))
+                conn.commit()
+                # do processing of tweet here
+                answer = process_tweet(api, id, model)
+                if not answer:
+                    print('broke')
+                    text = "did not work sad face :("
+                elif answer[0] > answer[1]:
+                    print('found a non garfield')
+                    text = f"this is NOT garfield"
+                else:
+                    print('found a garfield')
+                    text = "this is garfield!"
+                if answer:
+                    text = text+f"\n(garfield score of {answer[1]}, non garfield score of {answer[0]})"
+                api.create_tweet(
+                    text=text,
+                    user_auth=True,
+                    in_reply_to_tweet_id=tweet.id,
+                )
+    except(BaseException):
+        return
     return
 
 

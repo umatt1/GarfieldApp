@@ -1,5 +1,5 @@
 venv
 *.pyc
 framework/framework/settings.py
-CNN/secrets.py
+CNN/secret_keys.py
 
