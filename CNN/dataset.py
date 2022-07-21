@@ -29,7 +29,7 @@ class GarfieldDataset(Dataset):
             file = os.path.join(self.homedir, "garf_pics", self.files[index])
         else:
             file = os.path.join(self.homedir, "non_garf_pics", self.files[index])
-        image = Image.open(file)
+        image = Image.open(file).convert('RGB')
         image = self.transform(image)
         return image, self.labels[index]
 

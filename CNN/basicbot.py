@@ -49,7 +49,7 @@ def process_tweet(api, id, model):
         return None
     url = url.url
     urllib.request.urlretrieve(url, "image.png")
-    picture = Image.open("image.png")
+    picture = Image.open("image.png").convert('RGB')
     picture = transform(picture)
     picture = picture.unsqueeze(0)
     os.remove("image.png")
