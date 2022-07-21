@@ -40,8 +40,6 @@ def create_model():
 
 def process_tweet(api, id, model):
     # grab imagelink from text
-    #regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
-    #url = re.findall(regex, text)[0][0]
     url = api.get_tweet(id, user_auth=True, expansions="attachments.media_keys", media_fields="url")
     url = url.includes["media"][0]
     if url.type != 'photo':
