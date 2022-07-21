@@ -27,7 +27,6 @@ def create_api(consumer_key, consumer_secret, access_token, access_token_secret)
     #api = tweepy.API(auth)
     api = tweepy.Client(consumer_key=consumer_key, consumer_secret=consumer_secret,
         access_token=access_token, access_token_secret=access_token_secret)
-    #api = tweepy.Client("AAAAAAAAAAAAAAAAAAAAAD%2FieQEAAAAAgkgzymV4V3Hvd0n%2FiK85niLwsCA%3D786Ajt6Pp7aCT0aGKpUEciXeN3fm4aCt54iwhRfykJzFK4ksbc")
     return api
 
 def create_model():
