@@ -1,4 +1,3 @@
-from model import model
 import torch
 from dataset import GarfieldDataset
 import torchvision
